@@ -130,6 +130,41 @@ render(app, {
 ### 10. 使用koa-multer实现文件上传，如图片上传等
 注意 ： form 表单需要添加 `enctype="multipart/form-data"` 的属性设置。
 
+```js
+<form action="/doAdd" method="POST" enctype="multipart/form-data">
+
+<div class="form-group">
+  <label  for="pic">封面图:</label>
+  <input type="file" id="pic" name="pic" />
+</div>
+         <!-- button to submit -->
+</form>
+
+
+const multer = require('koa-multer');
+const storage = multer.diskStorage({
+  //配置上传文件保存的目录 图片上传的目录必须存在！！
+  destination: function (req, file, cb) {
+    cb(null, 'public/upload/images')
+  },
+  //修改文件名称
+  filename: function (req, file, cb) {
+    //获取后缀名，分割数组
+    const postfix = (file.originalname).split(".").slice(-1)[0]
+    cb(null, Date.now()+"."+postfix)
+  }
+})
+const upload = multer({ storage: storage })
+
+// 注意 ： 此处的pic一定要与上述上传图片的input框中的name一致！！！！！
+router.post('/doAdd', upload.single('pic'),async (ctx) =>{
+  ctx.body={
+    filename: ctx.req.file ? ctx.req.file.filename: '',
+    body: ctx.req.body
+  }
+})
+
+```
 
 ### 11. koa2-ueditor 富文本编辑器
 

@@ -46,8 +46,9 @@ render(app, {
     return sd.format(value,'YYYY-MM-DD HH:mm');
   }
 });
-// 配置静态资源的中间件
-app.use(static(__dirname+'/public'));
+// 配置静态资源的中间件,可同时配置多个
+//app.use(static('.'));  // 去根目录下(即包含app.js的目录)寻找,但是这样不安全
+app.use(static(__dirname+'/public'));  //去根目录下面的public目录下寻找
 
 //配置路由 层级路由
 router.use('/admin',adminRouter);

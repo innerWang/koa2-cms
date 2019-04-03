@@ -1,6 +1,7 @@
 const router = require('koa-router')();
 const DB = require('../../module/db.js');
 const multer = require('koa-multer');
+const tools = require('../../module/tools.js');
 
 const storage = multer.diskStorage({
   //配置上传文件保存的目录 图片上传的目录必须存在！！
@@ -31,19 +32,54 @@ router.get('/',async (ctx) =>{
 })
 
 router.get('/add',async (ctx) =>{
-  await ctx.render('admin/article/add')
+  //查询分类数据
+  const classifyList = await DB.find('article_classify',{});
+  await ctx.render('admin/article/add',{
+    catelist: tools.classifyToList(classifyList)
+  })
 })
 
-
+// 一定要注意，此处的'pic'要与模板add.html的图片输入框的name一致！！！！！
 router.post('/doAdd', upload.single('pic'),async (ctx) =>{
-  ctx.body = {
-    filename: ctx.req.file ? ctx.req.file.filename: '', // 返回文件名
-    body: ctx.req.body
+  const data = ctx.req.body
+
+  let pid = data.pid;
+  let classifyname = data.catename.trim();
+  let title = data.title.trim();
+  let author = data.author.trim();
+  let status = data.status;
+  let keywords = data.keywords.trim();
+  let is_best = data.is_best;
+  let is_hot = data.is_hot;
+  let is_new = data.is_new;
+  let description = data.description || '';
+  let content = data.content || '';
+  let img_url = ctx.req.file ? ctx.req.file.path: '';
+  img_url = img_url.split('\\').slice(1).join('/'); // 进行格式转换
+  let lastModify_time = new Date();
+ // let sort = Math.random()
+  let json = {
+    pid,classifyname,title,author,status,
+    keywords,is_best,is_hot,is_new,description,
+    content,img_url,lastModify_time
   }
+ // console.log(json)
+
+  await DB.insert('article',json);
+
+  ctx.redirect(ctx.state.__ROOT__+"/admin/article")
+
 })
 
 router.get('/edit',async (ctx) =>{
-  ctx.body = "修改用户信息"
+  const id = ctx.query.id;
+  const result = await DB.find('article',{'_id':DB.getObjectID(id)});
+  const catelist = await DB.find('article_classify',{});
+ // console.log(tools.classifyToList(catelist))
+  await ctx.render('admin/article/edit',{
+    catelist: tools.classifyToList(catelist),
+    article: result[0]
+  })
 })
 
 router.get('/delete',async (ctx) =>{
