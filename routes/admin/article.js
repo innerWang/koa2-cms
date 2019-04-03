@@ -57,11 +57,11 @@ router.post('/doAdd', upload.single('pic'),async (ctx) =>{
   let img_url = ctx.req.file ? ctx.req.file.path: '';
   img_url = img_url.split('\\').slice(1).join('/'); // 进行格式转换
   let lastModify_time = new Date();
- // let sort = Math.random()
+  let sort = '0';
   let json = {
     pid,classifyname,title,author,status,
     keywords,is_best,is_hot,is_new,description,
-    content,img_url,lastModify_time
+    content,img_url,lastModify_time,sort
   }
  // console.log(json)
 
@@ -78,9 +78,60 @@ router.get('/edit',async (ctx) =>{
  // console.log(tools.classifyToList(catelist))
   await ctx.render('admin/article/edit',{
     catelist: tools.classifyToList(catelist),
-    article: result[0]
+    article: result[0],
+    prevPage: ctx.state.G.prevPage
   })
 })
+
+
+router.post('/doEdit', upload.single('pic'),async (ctx) =>{
+  const data = ctx.req.body;
+
+  let prevPage = data.prevPage || '';
+  let id = data.id;
+  let pid = data.pid;
+  let classifyname = data.catename.trim();
+  let title = data.title.trim();
+  let author = data.author.trim();
+  let status = data.status;
+  let keywords = data.keywords.trim();
+  let is_best = data.is_best;
+  let is_hot = data.is_hot;
+  let is_new = data.is_new;
+  let description = data.description || '';
+  let content = data.content || '';
+  let img_url = ctx.req.file ? ctx.req.file.path: '';
+  img_url = img_url.split('\\').slice(1).join('/'); // 进行格式转换
+  let lastModify_time = new Date();
+ // let sort = Math.random()
+
+  let json = {};
+  if(img_url === ''){
+    json = {
+      pid,classifyname,title,author,status,
+      keywords,is_best,is_hot,is_new,description,
+      content,lastModify_time
+    }
+  }else{
+    json = {
+      pid,classifyname,title,author,status,
+      keywords,is_best,is_hot,is_new,description,
+      content,img_url,lastModify_time
+    }
+  }
+  
+ // console.log(json)
+
+  await DB.update('article',{"_id":DB.getObjectID(id)},json);
+  if(prevPage){
+    ctx.redirect(prevPage)
+  }else{
+    ctx.redirect(ctx.state.__ROOT__ + '/admin/article');
+  }
+  
+
+})
+
 
 router.get('/delete',async (ctx) =>{
   ctx.body = "删除用户"

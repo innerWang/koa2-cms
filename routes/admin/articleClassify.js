@@ -18,7 +18,7 @@ router.get('/add',async (ctx) =>{
 })
 
 router.post('/doAdd',async(ctx)=>{
-  console.log(ctx.request.body)
+ // console.log(ctx.request.body)
   const addData = ctx.request.body
   const data = await DB.insert('article_classify',{...addData,"add_time":new Date()});
   if(data.result.ok){

@@ -16,6 +16,12 @@ const app = {
       var flag = confirm('你确定删除吗？')
       return flag;
     })
+  },
+  changeSort(el,collectionName,id){
+    var sortValue = el.value;
+    $.get('/admin/changeSort',{collectionName:collectionName,id:id,sortValue:sortValue},function(data){
+      console.log(data)
+    })
   }
 }
 

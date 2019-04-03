@@ -5,6 +5,22 @@ router.get('/',async (ctx) =>{
   await ctx.render('admin/index')
 })
 
+
+
+router.get('/changeSort',async(ctx)=>{
+  var collection=ctx.query.collectionName; /*数据库*/
+  var sortValue=ctx.query.sortValue; /*排序值*/
+  var id=ctx.query.id; /*更新的 id*/
+  var updateResult= await DB.update(collection,{"_id":DB.getObjectID(id)},{sort:sortValue});
+  if(updateResult){
+    ctx.body={"message":'更新成功',"success":true};
+  }else{
+    ctx.body={"message":"更新失败","success":false}
+  }
+})
+
+
+
 router.get('/changeStatus',async (ctx) =>{
   //console.log(ctx.query)
   var collection=ctx.query.collectionName; /*数据库*/
