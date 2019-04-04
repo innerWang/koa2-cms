@@ -47,7 +47,7 @@ const articleRouter = require('./admin/article.js');
 const carouselRouter = require('./admin/carousel.js');
 const linkRouter = require('./admin/link.js');
 const navRouter = require('./admin/nav.js');
-
+const settingRouter = require('./admin/setting.js');
 
 router.use('/login',loginRouter);
 router.use('/user',userRouter);
@@ -57,6 +57,7 @@ router.use('/article',articleRouter);
 router.use('/carousel',carouselRouter);
 router.use('/link',linkRouter);
 router.use('/nav',navRouter);
+router.use('/setting',settingRouter);
 router.use(indexRouter);
 
 
