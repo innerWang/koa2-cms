@@ -1,7 +1,23 @@
 const md5 = require('md5');
-
+const multer = require('koa-multer');
 
 let tools={
+  multer(){
+    const storage = multer.diskStorage({
+      //配置上传文件保存的目录 图片上传的目录必须存在！！
+      destination: function (req, file, cb) {
+        cb(null, 'public/upload/images')
+      },
+      //修改文件名称
+      filename: function (req, file, cb) {
+        //获取后缀名，分割数组
+        const postfix = (file.originalname).split(".").slice(-1)[0]
+        cb(null, Date.now()+"."+postfix)
+      }
+    })
+    const upload = multer({ storage: storage })
+    return upload;
+  },
   md5(str){
     return md5(str);
   },

@@ -1,21 +1,6 @@
 const router = require('koa-router')();
 const DB = require('../../module/db.js');
-const multer = require('koa-multer');
 const tools = require('../../module/tools.js');
-
-const storage = multer.diskStorage({
-  //配置上传文件保存的目录 图片上传的目录必须存在！！
-  destination: function (req, file, cb) {
-    cb(null, 'public/upload/images')
-  },
-  //修改文件名称
-  filename: function (req, file, cb) {
-    //获取后缀名，分割数组
-    const postfix = (file.originalname).split(".").slice(-1)[0]
-    cb(null, Date.now()+"."+postfix)
-  }
-})
-const upload = multer({ storage: storage })
 
 
 router.get('/',async (ctx) =>{
@@ -47,7 +32,7 @@ router.get('/add',async (ctx) =>{
 
 // 一定要注意，此处的'pic'要与模板add.html的图片输入框的name一致！！！！！
 // 且一定要配置form的属性 enctype="multipart/form-data"
-router.post('/doAdd', upload.single('pic'),async (ctx) =>{
+router.post('/doAdd', tools.multer().single('pic'),async (ctx) =>{
   const data = ctx.req.body
 
   let pid = data.pid;
@@ -91,7 +76,7 @@ router.get('/edit',async (ctx) =>{
 })
 
 
-router.post('/doEdit', upload.single('pic'),async (ctx) =>{
+router.post('/doEdit', tools.multer().single('pic'),async (ctx) =>{
   const data = ctx.req.body;
 
   let prevPage = data.prevPage || '';

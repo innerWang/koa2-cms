@@ -1,19 +1,20 @@
 const router = require('koa-router')();
 const DB = require('../../module/db.js');
+
 const tools = require('../../module/tools.js');
 
 router.get('/', async (ctx) => {
   var pageNum = ctx.query.page || 1;
   var pageSize = 3;
-  var count = await DB.count('carousel',{});
-  const result = await DB.find('carousel',{},{},{
+  var count = await DB.count('link',{});
+  const result = await DB.find('link',{},{},{
     pageNum,
     pageSize,
     sortBy: {
       lastModified_time: -1
     }
   })
-  await ctx.render('admin/carousel/list', {
+  await ctx.render('admin/link/list', {
     list: result,
     pageNum:pageNum,
     totalPages: Math.ceil(count/pageSize)
@@ -21,7 +22,7 @@ router.get('/', async (ctx) => {
 })
 
 router.get('/add', async (ctx) => {
-  await ctx.render('admin/carousel/add')
+  await ctx.render('admin/link/add')
 })
 
 // 一定要注意，此处的'pic'要与模板add.html的图片输入框的name一致！！！！！
@@ -41,19 +42,19 @@ router.post('/doAdd', tools.multer().single('pic'), async (ctx) => {
   const json = {title,pic,url,status,sort,lastModified_time}
   //console.log(json);
 
-  await DB.insert('carousel',json)
+  await DB.insert('link',json)
 
-  ctx.redirect(ctx.state.__ROOT__ + '/admin/carousel')
+  ctx.redirect(ctx.state.__ROOT__ + '/admin/link')
 
 })
 
 router.get('/edit', async (ctx) => {
   const id = ctx.query.id;
-  const result = await DB.find('carousel', {
+  const result = await DB.find('link', {
     '_id': DB.getObjectID(id)
   })
 
-  await ctx.render('admin/carousel/edit', {
+  await ctx.render('admin/link/edit', {
     result: result[0],
     prevPage: ctx.state.G.prevPage
   })
@@ -81,10 +82,10 @@ router.post('/doEdit', tools.multer().single('pic'), async (ctx) => {
     json = {title,pic,url,status,sort,lastModified_time}
   }
 
-   await DB.update('carousel',{"_id":DB.getObjectID(id)},json)
+   await DB.update('link',{"_id":DB.getObjectID(id)},json)
 
   if(prevPage === ''){
-    ctx.redirect(ctx.state.__ROOT__ + '/admin/carousel')
+    ctx.redirect(ctx.state.__ROOT__ + '/admin/link')
   }else{
     ctx.redirect(prevPage)
   }
