@@ -1,5 +1,4 @@
 ﻿{{include 'admin/public/header.html'}}
-
 <body>
   {{include 'admin/public/nav_top.html'}}
 
@@ -48,7 +47,7 @@
 
           <div class="page-header">
             <h1>
-              文章列表
+              轮播图列表
             </h1>
           </div><!-- /.page-header -->
 
@@ -59,92 +58,61 @@
               <thead>
                 <tr>
                   <th class="center">标题</th>
-                  <th class="center">分类</th>
-                  <th class="center">
-                    <i class="icon-time bigger-110 hidden-480"></i>
-                    最后更新时间
-                  </th>
-                  <th width="60px;" class="center">排序</th>
-                  <th width="60px;" class="center">热门</th>
-                  <th width="60px;" class="center">推荐</th>
-                  <th width="60px;" class="center">状态</th>
+                  <th class="center">图片 </th>
+                  <th class="center">链接地址</th>
+                  <th class="center">排序</th>
+                  <th class="center">状态</th>
                   <th width="100px;" class="center">操作</th>
                 </tr>
               </thead>
 
               <tbody>
-                {{each list}}
-                <tr class="">
 
+                {{each list}}
+
+                <tr class="">
                   <td>
                     {{$value.title}}
                   </td>
-                  <td>
-                    {{$value.classifyname}}
+                  <td> 
+                    <img src="{{__ROOT__}}/{{$value.pic}}" alt="" style="width:50px;">
+                  </td>
+                  <td> {{$value.url}} </td>
+                  <td> 
+                    <input type="text" value="{{$value.sort || 0}}" class="sort_input" 
+                    onblur="app.changeSort(this,'carousel','{{@$value._id}}')" />
                   </td>
 
-                  <td>
-                    {{$value.lastModify_time | dateFormat}}
-                  </td>
-                  <td>
-                    <input type="text" value="{{$value.sort || 0}}" class="sort_input"
-                      onblur="app.changeSort(this,'article','{{@$value._id}}')" />
-                  </td>
-
-                  <td>
-                    {{if $value.is_hot=='1'}}
-                    <img src="{{__ROOT__}}/admin/images/yes.gif"
-                      onclick="app.toggle(this,'article','is_hot','{{@$value._id}}')" />
+                  <td class="hidden-480">
+                    {{if $value.status == 1}}
+                    <img src="{{__HOST__}}/admin/images/yes.gif"
+                      onclick="app.toggle(this,'carousel','status','{{@ $value._id}}')">
                     {{else}}
-                    <img src="{{__ROOT__}}/admin/images/no.gif"
-                      onclick="app.toggle(this,'article','is_hot','{{@$value._id}}')" />
+                    <img src="{{__HOST__}}/admin/images/no.gif"
+                      onclick="app.toggle(this,'carousel','status','{{@ $value._id}}')">
                     {{/if}}
                   </td>
 
                   <td>
-                    {{if $value.is_best=='1'}}
-                    <img src="{{__ROOT__}}/admin/images/yes.gif"
-                      onclick="app.toggle(this,'article','is_best','{{@$value._id}}')" />
-                    {{else}}
-                    <img src="{{__ROOT__}}/admin/images/no.gif"
-                      onclick="app.toggle(this,'article','is_best','{{@$value._id}}')" />
-                    {{/if}}
-                  </td>
-
-                  <td>
-                    {{if $value.status=='1'}}
-                    <img src="{{__ROOT__}}/admin/images/yes.gif"
-                      onclick="app.toggle(this,'article','status','{{@$value._id}}')" />
-                    {{else}}
-                    <img src="{{__ROOT__}}/admin/images/no.gif"
-                      onclick="app.toggle(this,'article','status','{{@$value._id}}')" />
-                    {{/if}}
-                  </td>
-                  <td>
-                    <a href="{{__ROOT__}}/admin/article/edit?id={{@$value._id}}">
-                      <button class="btn btn-xs btn-info">
-                        <i class="icon-edit bigger-120"></i>
-                      </button>
-                    </a>
-                    &nbsp;&nbsp;
-                    <a class="delete" href="{{__ROOT__}}/admin/delete?collection=article&id={{@$value._id}}">
-                      <button class="btn btn-xs btn-danger">
-                        <i class="icon-trash bigger-120"></i>
-                      </button>
-                    </a>
-
-
+                    <div class="visible-md visible-lg hidden-sm hidden-xs btn-group center">
+                      <a href="{{__ROOT__}}/admin/carousel/edit?id={{@$value._id}}">
+                        <button class="btn btn-xs btn-info">
+                          <i class="icon-edit bigger-120"></i>
+                        </button>
+                      </a>
+                      <a  class="delete" href="{{__ROOT__}}/admin/delete?id={{@$value._id}}&collection=carousel">
+                        <button class="btn btn-xs btn-danger">
+                          <i class="icon-trash bigger-120"></i>
+                        </button>
+                      </a>
+                    </div>
                   </td>
                 </tr>
                 {{/each}}
-
-
               </tbody>
             </table>
           </div>
-
           <ul id="paginator" class="pagination"></ul>
-
         </div>
       </div><!-- /.main-content -->
 
@@ -166,10 +134,10 @@
       currentPage: {{pageNum}},
       onPageChange: function (num, type) {
           // $('#text').html('当前第' + num + '页');
+          console.log('click..',num,type);
           if(type === "change"){
-            location.href = "{{__ROOT__}}/admin/article?page="+num;
-          }
-          
+            location.href = "{{__ROOT__}}/admin/carousel?page="+num;
+          }   
       }
     });
   </script>

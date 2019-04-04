@@ -45,12 +45,13 @@ class Db{
     // json2 用于指定返回表中的哪一列 如{title:1},则只返回_id和title这两列
     const pageNum = json3&&json3.pageNum || 1; 
     const pageSize = json3&&json3.pageSize || 10;
+    const sortBy = json3 && json3.sortBy || {};
     const skipNum = (pageNum -1)*pageSize;
     
 		return new Promise((resolve,reject)=>{
 			this.connect().then((db)=>{
         //const result = db.collection(collectionName).find(json);
-        const result = db.collection(collectionName).find(json1,json2).skip(skipNum).limit(pageSize);
+        const result = db.collection(collectionName).find(json1,json2).skip(skipNum).limit(pageSize).sort(sortBy);
 				result.toArray((err,docs)=>{
 					if(err){
 						reject(err);

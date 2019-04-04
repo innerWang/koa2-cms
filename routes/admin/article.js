@@ -20,10 +20,16 @@ const upload = multer({ storage: storage })
 
 router.get('/',async (ctx) =>{
   var pageNum = ctx.query.page || 1;
-  var pageSize = 3;
+  var pageSize = 5;
   var count = await DB.count('article',{});
  // console.log(count)
-  const result = await DB.find('article',{},{},{pageNum,pageSize})
+  const result = await DB.find('article',{},{},{
+    pageNum,
+    pageSize,
+    sortBy: {
+      lastModify_time: -1
+    }
+  })
   await ctx.render('admin/article/list',{
     list : result,
     pageNum:pageNum,
@@ -40,6 +46,7 @@ router.get('/add',async (ctx) =>{
 })
 
 // 一定要注意，此处的'pic'要与模板add.html的图片输入框的name一致！！！！！
+// 且一定要配置form的属性 enctype="multipart/form-data"
 router.post('/doAdd', upload.single('pic'),async (ctx) =>{
   const data = ctx.req.body
 
@@ -49,9 +56,9 @@ router.post('/doAdd', upload.single('pic'),async (ctx) =>{
   let author = data.author.trim();
   let status = data.status;
   let keywords = data.keywords.trim();
-  let is_best = data.is_best;
-  let is_hot = data.is_hot;
-  let is_new = data.is_new;
+  let is_best = data.is_best || '0';
+  let is_hot = data.is_hot || '0';
+  let is_new = data.is_new || '0';
   let description = data.description || '';
   let content = data.content || '';
   let img_url = ctx.req.file ? ctx.req.file.path: '';
@@ -95,9 +102,9 @@ router.post('/doEdit', upload.single('pic'),async (ctx) =>{
   let author = data.author.trim();
   let status = data.status;
   let keywords = data.keywords.trim();
-  let is_best = data.is_best;
-  let is_hot = data.is_hot;
-  let is_new = data.is_new;
+  let is_best = data.is_best || '0';
+  let is_hot = data.is_hot || '0';
+  let is_new = data.is_new || '0';
   let description = data.description || '';
   let content = data.content || '';
   let img_url = ctx.req.file ? ctx.req.file.path: '';
@@ -132,9 +139,5 @@ router.post('/doEdit', upload.single('pic'),async (ctx) =>{
 
 })
 
-
-router.get('/delete',async (ctx) =>{
-  ctx.body = "删除用户"
-})
 
 module.exports = router.routes();

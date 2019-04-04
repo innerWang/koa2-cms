@@ -44,12 +44,14 @@ const administratorRouter = require('./admin/administrator.js');
 const indexRouter = require('./admin/index.js');
 const articleClassifyRouter = require('./admin/articleClassify.js');
 const articleRouter = require('./admin/article.js');
+const carouselRouter = require('./admin/carousel.js');
 
 router.use('/login',loginRouter);
 router.use('/user',userRouter);
 router.use('/administrator',administratorRouter);
 router.use('/articleClassify',articleClassifyRouter);
 router.use('/article',articleRouter);
+router.use('/carousel',carouselRouter);
 router.use(indexRouter);
 
 

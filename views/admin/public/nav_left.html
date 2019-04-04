@@ -71,7 +71,7 @@
     <li {{if G.url[1]==="articleClassify"}} class="active open" {{/if}} >
       <a href="#" class="dropdown-toggle">
         <i class="icon-user-md"></i>
-        <span class="menu-text"> 分类管理 </span>
+        <span class="menu-text"> 文章分类管理 </span>
 
         <b class="arrow icon-angle-down"></b>
       </a>
@@ -80,14 +80,14 @@
         <li {{if !G.url[2]}} class="active" {{/if}}>
           <a href="{{__ROOT__}}/admin/articleClassify">
             <i class="icon-double-angle-right"></i>
-            分类列表
+            文章分类列表
           </a>
         </li>
 
         <li {{if G.url[2]==="add"}} class="active" {{/if}}>
           <a href="{{__ROOT__}}/admin/articleClassify/add">
             <i class="icon-double-angle-right"></i>
-            增加分类
+            增加文章分类
           </a>
         </li>
 
@@ -122,31 +122,25 @@
       </ul>
     </li>
 
-
-    <li>
+    <li {{if G.url[1]==="carousel"}} class="active open" {{/if}} >
       <a href="#" class="dropdown-toggle">
-        <i class="icon-picture"></i>
+        <i class="icon-user-md"></i>
         <span class="menu-text"> 轮播图管理 </span>
-
         <b class="arrow icon-angle-down"></b>
       </a>
-
       <ul class="submenu">
-        <li>
-          <a href="#">
+        <li {{if !G.url[2]}} class="active" {{/if}}>
+          <a href="{{__ROOT__}}/admin/carousel">
             <i class="icon-double-angle-right"></i>
             轮播图列表
           </a>
         </li>
-
-        <li>
-          <a href="#">
+        <li {{if G.url[2]==="add"}} class="active" {{/if}}>
+          <a href="{{__ROOT__}}/admin/carousel/add">
             <i class="icon-double-angle-right"></i>
-            增加轮播图
+            新增轮播图
           </a>
-        </li>
-
-        
+        </li>      
       </ul>
     </li>
 

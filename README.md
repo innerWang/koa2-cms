@@ -87,6 +87,9 @@ yarn add art-template
 yarn add koa-art-template
 ```
 
+**koa 提供了ctx.state来保存状态数据，可在全局使用**
+
+
 使用：
 ```js
 const render = require('koa-art-template')
@@ -129,6 +132,12 @@ render(app, {
 
 ### 10. 使用koa-multer实现文件上传，如图片上传等
 注意 ： form 表单需要添加 `enctype="multipart/form-data"` 的属性设置。
+
+enctype: 当 method 属性值为 post 时, enctype 是将form的内容提交给服务器的媒体类型
+* `application/x-www-form-urlencoded`: 未指定属性时的默认值。
+* `multipart/form-data` : 这个值用于一个 type 属性设置为 "file" 的 <input> 元素
+* `text/plain` (HTML5)
+
 
 ```js
 <form action="/doAdd" method="POST" enctype="multipart/form-data">
