@@ -71,16 +71,18 @@
                   <div class="col-sm-10">
                     <select name="pid" id="pid">
                       {{each catelist}}
-                      <option value="{{@$value._id}}" {{if article.pid == $value._id }} selected {{/if }} >{{$value.title}}</option>
+                      <option value="{{@$value._id}}" {{if article.pid == $value._id }} selected {{/if }}>
+                        {{$value.title}}</option>
 
                       {{each $value.list}}
-                      <option value="{{@$value._id}}" {{if article.pid == $value._id }} selected {{/if }} >--------{{$value.title}}</option>
+                      <option value="{{@$value._id}}" {{if article.pid == $value._id }} selected {{/if }}>
+                        --------{{$value.title}}</option>
                       {{/each}}
                       {{/each}}
 
                     </select>
                   </div>
-                  <input type="hidden" name="catename" id="catename" value="{{catelist[0].title}}" />
+                  <input type="hidden" name="catename" id="catename" value="{{article.classifyname}}" />
                   <input type="hidden" name="id" value="{{@article._id}}">
                   <input type="hidden" name="prevPage" value="{{prevPage}}">
                 </div>
@@ -101,28 +103,31 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-2 no-padding-right"></div>
-                    <div class="col-sm-10">
-                        <img src="{{__ROOT__}}/{{article.img_url}}" alt="" style="height:50px;">
-                    </div>
+                  <div class="col-sm-2 no-padding-right"></div>
+                  <div class="col-sm-10">
+                    <img src="{{__ROOT__}}/{{article.img_url}}" alt="" style="height:50px;">
+                  </div>
                 </div>
 
                 <br>
 
                 <div class="form-group">
-                  <label class="col-sm-2 control-label no-padding-right" for="author" >作者:</label>
+                  <label class="col-sm-2 control-label no-padding-right" for="author">作者:</label>
 
                   <div class="col-sm-10">
-                    <input type="text" id="author" name="author" class="col-xs-10 col-sm-5" value="{{article.author}}"/>
+                    <input type="text" id="author" name="author" class="col-xs-10 col-sm-5"
+                      value="{{article.author}}" />
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-sm-2 control-label no-padding-right">状态:</label>
                   <div class="col-sm-10">
-                    <label for="status1">已审核 </label><input type="radio" name="status" id="status1" value="1" {{if article.status=="1"}} checked{{/if}}  />
+                    <label for="status1">已审核 </label><input type="radio" name="status" id="status1" value="1"
+                      {{if article.status=="1"}} checked{{/if}} />
                     &nbsp;
-                    <label for="status2">未审核 </label><input type="radio" name="status" id="status2" value="0" {{if article.status=="0"}} checked{{/if}} />
+                    <label for="status2">未审核 </label><input type="radio" name="status" id="status2" value="0"
+                      {{if article.status=="0"}} checked{{/if}} />
                   </div>
                 </div>
 
@@ -149,13 +154,15 @@
                   <label class="col-sm-2 control-label no-padding-right" for="keywords">关键字：</label>
 
                   <div class="col-sm-10">
-                    <input type="text" id="keywords" name="keywords" class="col-xs-10 col-sm-5" value="{{article.keywords}}"/>
+                    <input type="text" id="keywords" name="keywords" class="col-xs-10 col-sm-5"
+                      value="{{article.keywords}}" />
                   </div>
                 </div>
                 <div class="form-group" style="height:100px;">
                   <label class="col-sm-2 control-label no-padding-right" for="description">描述：</label>
                   <div class="col-sm-10">
-                      <input type="text" id="description" name="description" class="col-xs-10 col-sm-5" value="{{article.description}}" />
+                    <input type="text" id="description" name="description" class="col-xs-10 col-sm-5"
+                      value="{{article.description}}" />
                   </div>
                 </div>
               </div>
@@ -186,7 +193,7 @@
   <script>
     var ue = UE.getEditor('content');
 
-    ue.addListener('ready',function(){
+    ue.addListener('ready', function () {
       ue.setContent(`{{@article.content}}`);
     })
 
@@ -195,10 +202,11 @@
     var catename = document.querySelector("#catename");
     var options = document.querySelectorAll("#pid option");
     pid.addEventListener('change', () => {
+      console.log('change article classify...')
       // 分类改变的时候，获取选中的值，赋值给catename
       for (var i = 0; i < options.length; i++) {
         if (options[i].selected) {
-          catename.value = options[i].innerText.replace(/^-+/, '')
+          catename.value = options[i].innerText.replace(/^\s*-+/, '')
         }
       }
     })

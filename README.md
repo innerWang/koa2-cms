@@ -178,12 +178,79 @@ router.post('/doAdd', upload.single('pic'),async (ctx) =>{
 ### 11. koa2-ueditor 富文本编辑器
 
 
+### 12. 网站SEO(搜索引擎优化)技巧
 
+1. 设置网站的标题、关键字、描述
+2. 图片添加alt
+3. 合理使用html标签
+4. 合理使用h标签，一个页面建议只出现一次
+5. 合理使用内链和外链
+6. 内容为王(原创)
+7. 长尾关键词
 
+### 13. koa提供api接口
 
+浏览器向一个域发起请求时总是会带上这个域及其父域的cookie
 
+同源策略只阻止读取ajax返回的内容，实际上请求仍发送到了服务器
 
+#### 13.1 jsonp的方式
+后台需要配置可以使用jsonp(koa-jsonp). 需要注意jsonp仅支持get请求。
 
+##### 1. 原生js发起请求
+使用script标签，给src属性赋值为要请求的接口，页面加载时会向script标签中的src发起请求，返回的内容即为`xxxx({...})`的形式，页面在接收到返回后直接执行`xxxx()`。
+
+```js
+  function xxxx(data){
+    console.log(data)
+  }
+
+  <script src="http://localhost:3000/api/catelist?callback=xxxx"></script>
+```
+
+##### 2. jquery发起请求
+```js
+ $(function(){
+   var url = 'http://localhost:3000/api/catelist';
+   $.ajax({
+     url:url,
+     dataType:'jsonp',
+     data:'',
+     jsonp:'callback',  /**/
+     success:function(data){   /*请求成功后调用的函数*/
+       console.log(data)
+     },
+     timeout:3000
+   })
+ })
+```
+
+#### 13.2 cors的方式
+
+安装koa2-cors，配置后台允许通过cors的方式进行跨域。
+```js
+var Koa = require('koa');
+var cors = require('koa2-cors');
+var app = new Koa();
+app.use(cors());
+
+```
+
+### 14. koa2 RESTful API设计
+
+1. 协议，尽量使用HTTPS
+2. 域名，尽量部署在专属域名下面，
+3. 将api的版本号放入url中
+4. 在RESTful架构中，每个网址代表一种资源，所以网址中不能有动词，只能有名次，且所用的名次往往与数据库的表格名对应。
+5. http请求数据的方式：
+  * GET(SELECT) : 从服务器取资源
+  * POST(CREATE) : 在服务器新建一个资源
+  * PUT(UPDATE) : 在服务器更新资源，客户端需提供改变后的完整资源
+  * DELETE(DELETE) : 从服务器删除资源
+  * PATCH(UPDATE) : 在服务器更新资源(客户端提供要改变的属性)
+  * HEAD
+  * OPTIONS
+6. 过滤方式、请求数据方式、返回数据的格式(json)、安全性(签名验证鉴权)
 
 
 

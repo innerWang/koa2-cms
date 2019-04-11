@@ -6,7 +6,8 @@ const Koa = require('koa'),
       session = require('koa-session'),
       bodyParser = require('koa-bodyparser'),
       sd = require('silly-datetime'),
-      jsonp = require('koa-jsonp');
+      jsonp = require('koa-jsonp'),
+      cors = require('koa2-cors');
 
 //引入子路由
 const adminRouter = require('./routes/admin.js');
@@ -18,6 +19,9 @@ const app = new Koa();
 
 // 配置jsonp中间件
 app.use(jsonp())
+
+// 配置后台允许跨域，安全性的保证需要使用签名验证
+app.use(cors());
 
 //配置post提交数据的bodyparser中间件
 app.use(bodyParser());

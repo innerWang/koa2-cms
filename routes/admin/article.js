@@ -5,7 +5,7 @@ const tools = require('../../module/tools.js');
 
 router.get('/',async (ctx) =>{
   var pageNum = ctx.query.page || 1;
-  var pageSize = 5;
+  var pageSize = 10;
   var count = await DB.count('article',{});
  // console.log(count)
   const result = await DB.find('article',{},{},{

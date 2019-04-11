@@ -41,10 +41,15 @@ class Db{
 		})
 	}
 
+  /** 
+   * json1: 查询的条件 ---返回对应行
+   * json2: 查询的字段 ---返回对应列
+   * json3: 对查询结果进行操作
+  */
   find(collectionName,json1={},json2={},json3){ /*查找数据*/
     // json2 用于指定返回表中的哪一列 如{title:1},则只返回_id和title这两列
     const pageNum = json3&&json3.pageNum || 1; 
-    const pageSize = json3&&json3.pageSize || 10;
+    const pageSize = json3&&json3.pageSize || 20;
     const sortBy = json3 && json3.sortBy || {};
     const skipNum = (pageNum -1)*pageSize;
     

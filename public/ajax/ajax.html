@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ajax请求</title>
+</head>
+<body>
+  <button id="request"> 请求列表数据</button>
+</body>
+
+
+
+<script>
+/*
+  浏览器同源策略，当域名，端口，协议不一致时，浏览器会阻止读取ajax返回的内容，实际请求依然发送到了服务器
+*/
+  function xxxx(data){
+    console.log(data)
+  }
+
+
+  /**
+   *  当在同一域名下后台不配置cors跨域时，可以得到数据
+   *  当在非本域发送请求时，后台若配置了cors跨域，也可以得到数据！！
+   */
+  document.querySelector("#request").addEventListener('click',function(){
+    console.log('click request data111...')
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','http://localhost:3000/api/catelist');
+    xhr.onload = function(){
+      if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304){
+        console.log(JSON.parse(xhr.responseText))
+      }else{
+        console.log('请求有误')
+      }
+    }
+    xhr.onerror = ()=>{
+      console.log('连接错误')
+    }
+    xhr.send()
+
+  })
+</script>
+<script src="http://localhost:3000/api/catelist?callback=xxxx"></script>
+</html>

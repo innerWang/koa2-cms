@@ -501,6 +501,11 @@ koa-static@^5.0.0:
     debug "^3.1.0"
     koa-send "^5.0.0"
 
+koa2-cors@^2.0.6:
+  version "2.0.6"
+  resolved "http://registry.npm.taobao.org/koa2-cors/download/koa2-cors-2.0.6.tgz#9ad23df3a0b9bb84530b46f5944f3fb576086554"
+  integrity sha1-mtI986C5u4RTC0b1lE8/tXYIZVQ=
+
 koa2-ueditor@^1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.taobao.org/koa2-ueditor/download/koa2-ueditor-1.1.2.tgz#a005a9a47939b474929c374902907a445dc2307c"
